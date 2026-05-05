@@ -1,0 +1,41 @@
+name: Production Reliability Suite
+description: >
+  Chaos Engineering experiment suite for validating
+  production reliability at Southwest Airlines scale.
+  Maps to Project ChaosProof fault injection experiments.
+
+experiments:
+  - name: pod-kill
+    target: payment-api
+    namespace: production
+    wait_between_seconds: 60
+    description: "Kill random pod — validate self-healing"
+
+  - name: pod-kill
+    target: booking-service
+    namespace: production
+    wait_between_seconds: 60
+    description: "Kill booking service pod — validate failover"
+
+  - name: cpu-stress
+    target: flight-search
+    namespace: production
+    wait_between_seconds: 90
+    description: "CPU stress — validate auto-scaling"
+
+  - name: memory-pressure
+    target: notification-service
+    namespace: production
+    wait_between_seconds: 60
+    description: "Memory pressure — validate OOM handling"
+
+  - name: pod-failure
+    target: data-pipeline
+    namespace: production
+    wait_between_seconds: 60
+    description: "Force pod failure — validate restart policies"
+
+slo_targets:
+  recovery_time_seconds: 120
+  availability: 99.9
+  error_rate_threshold: 0.1
